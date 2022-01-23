@@ -7,10 +7,10 @@ export default function Auth() {
   const onChange = (e) => {
     if(e.target.name === 'email') {
       setEmail(e.target.value);
-      console.log(email);
+      console.log(e.target.value);
     } else if(e.target.name === 'password') {
       setPassword(e.target.value);
-      console.log(password);
+      console.log(e.target.value);
     }
   }
 
@@ -21,10 +21,10 @@ export default function Auth() {
 
   return <div>
     <h1>Auth</h1>
-    <form>
+    <form onSubmit={onSubmit}>
       <input 
         name="email" 
-        type="text" 
+        type="email" 
         placeholder='Email' 
         required 
         value={email}
