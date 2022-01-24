@@ -1,9 +1,16 @@
 import React from 'react';
 import { useState } from 'react';
+import { 
+  auth, 
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword
+} from '../firebase';
+
 
 export default function Auth() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState(''); 
+  const [newAccount, setNewAccount] = useState(true);
   const onChange = (e) => {
     if(e.target.name === 'email') {
       setEmail(e.target.value);
@@ -14,9 +21,21 @@ export default function Auth() {
     }
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    console.log('submit');
+    try {
+      let data;
+      if(newAccount) {
+        // create Account
+        data = await createUserWithEmailAndPassword(auth, email, password);
+      } else {
+        // log in
+        data = await signInWithEmailAndPassword(auth, email, password);
+      }
+      console.log(data);
+    } catch(err) {
+      console.log(err);
+    }
   }
 
   return <div>
@@ -38,7 +57,10 @@ export default function Auth() {
         value={password}
         onChange={onChange}
       />
-      <input type="submit" value="로그인" />
+      <input 
+        type="submit" 
+        value={ newAccount ? "회원가입" : "로그인" }
+      />
     </form>
     <div>
       <button>구글 로그인</button>
