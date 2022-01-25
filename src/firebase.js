@@ -4,7 +4,8 @@ import { initializeApp } from "firebase/app";
 import { 
   getAuth, 
   signInWithEmailAndPassword,
-  createUserWithEmailAndPassword 
+  createUserWithEmailAndPassword,
+  onAuthStateChanged
 } from "firebase/auth";
 import "firebase/compat/firestore";
 import "firebase/compat/storage";
@@ -21,5 +22,10 @@ const firebaseConfig = {
 // export default firebase.initializeApp(firebaseConfig);
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
-export { auth, signInWithEmailAndPassword, createUserWithEmailAndPassword }
+export { 
+  auth, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword,
+  onAuthStateChanged
+}
 

@@ -10,7 +10,8 @@ import {
 export default function Auth() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState(''); 
-  const [newAccount, setNewAccount] = useState(true);
+  const [newAccount, setNewAccount] = useState(false);
+  const [error, setError] = useState('');
   const onChange = (e) => {
     if(e.target.name === 'email') {
       setEmail(e.target.value);
@@ -19,7 +20,7 @@ export default function Auth() {
       setPassword(e.target.value);
       console.log(e.target.value);
     }
-  }
+  } 
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -34,8 +35,15 @@ export default function Auth() {
       }
       console.log(data);
     } catch(err) {
-      console.log(err);
+      console.log(err.message);
+      setError(err.message);
     }
+  }
+
+  const signUp = (e) => {
+    e.preventDefault();
+    setNewAccount(prev => !prev);
+
   }
 
   return <div>
@@ -62,6 +70,8 @@ export default function Auth() {
         value={ newAccount ? "회원가입" : "로그인" }
       />
     </form>
+    <p>계정이 없으신가요? <a onClick={ signUp } href="#">가입하기</a></p>
+    <p className="errorMsg">{error}</p>
     <div>
       <button>구글 로그인</button>
       <button>깃허브 로그인</button>
