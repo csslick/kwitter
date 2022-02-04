@@ -1,1 +1,1 @@
-# Tweeter clone App
+# Twitter clone App
