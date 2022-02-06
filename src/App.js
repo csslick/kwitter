@@ -1,4 +1,4 @@
-import AppRouter from './componens/Router'
+import AppRouter from './components/Router'
 import { useState, useEffect } from 'react';
 import { auth } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
