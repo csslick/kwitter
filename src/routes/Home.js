@@ -1,46 +1,55 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { db } from '../firebase'
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import { 
+  collection, 
+  addDoc, 
+  getDocs,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
 
-export default function Home() {
+export default function Home({userObj}) {
   const [sweet, setSweet] = useState('');
   const [sweets, setSweets] = useState([]); // 읽어온 글
-  // db에서 글 읽음
-  const getSweets = async () => {
-    const querySnapshot = await getDocs(collection(db, "sweets"));
-    const arr = [];
-    querySnapshot.forEach((doc) => {
-      console.log(doc.data());
-      console.log(doc.id);
-      const obj = {...doc.data()}
-      console.log('obj = ', obj)
-    });
-
-  }
 
   useEffect(() => {
-    getSweets();
+    // db에서 실시간으로 글 읽음
+    const q = query(collection(db, "sweets"), orderBy('createdAt'));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const newArr = [];
+      querySnapshot.forEach((doc) => {
+        const obj = {
+          id: doc.id,  // id(key)
+          ...doc.data()
+        }
+        newArr.push(obj);
+      });
+      setSweets(newArr.reverse());
+      console.log("Current data: ", newArr);
+    });
   }, [])
 
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
       const docRef = await addDoc(collection(db, "sweets"), {
-        sweet,
+        text: sweet,
         createdAt: Date.now(),
+        userId: userObj.uid
       });
       setSweet('');
       console.log("Document written with ID: ", docRef.id);
     } catch (e) {
       console.error("Error adding document: ", e);
     }
-    console.log('submit');
   }
 
   const onChange = e => {
     setSweet(e.target.value);
-    console.log(sweet);
+    // console.log(sweet);
+    console.log('sweets = ', sweets)
   }
 
   return <div>
@@ -58,5 +67,14 @@ export default function Home() {
         value="Sweet" 
       />
     </form>
+    <div>
+      {
+        sweets.map(sweet => {
+          return <div key={sweet.id}>
+              <h4>{sweet.text}</h4>
+            </div>
+        })
+      }
+    </div>
   </div>
 }

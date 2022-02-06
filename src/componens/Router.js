@@ -6,14 +6,17 @@ import Home from '../routes/Home';
 import Nav from '../componens/Nav';
 import Profile from '../routes/Profile';
 
-export default function AppRouter({isLoggedIn}) {
+export default function AppRouter({isLoggedIn, userObj}) {
   
   return <Router>
     {isLoggedIn && <Nav />}
     <Routes>
       {isLoggedIn ? 
         <>
-          <Route path="/" element={<Home />}/>
+          <Route 
+            path="/" 
+            element={<Home userObj={userObj}/>}
+          />
           <Route path="/profile" element={<Profile />}/>
         </> :
         <Route path="/" element={<Auth />}/>
