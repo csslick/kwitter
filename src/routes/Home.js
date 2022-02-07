@@ -2,8 +2,9 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { db } from '../firebase'
 import { collection, addDoc, getDocs, onSnapshot, orderBy, query } from "firebase/firestore";
-import Sweet from '../components/Sweet';
+import Sweet from '../components/Sweet'; // 글
 
+// userObj: 사용자 객체, sweets: Doc 
 export default function Home({userObj}) {
   const [sweet, setSweet] = useState('');
   const [sweets, setSweets] = useState([]); // 읽어온 글
@@ -67,7 +68,7 @@ export default function Home({userObj}) {
           return (
             <Sweet 
               key={sweet.id} 
-              userObj={sweet} 
+              sweet={sweet} 
               isOwner={sweet.userId == userObj.uid}
             />
           ) 

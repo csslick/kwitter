@@ -7,7 +7,6 @@ import Nav from '../components/Nav';
 import Profile from '../routes/Profile';
 
 export default function AppRouter({isLoggedIn, userObj}) {
-  
   return <Router>
     {isLoggedIn && <Nav />}
     <Routes>
