@@ -76,5 +76,5 @@ export default function Auth() {
       <button>구글 로그인</button>
       <button>깃허브 로그인</button>
     </div>
-  </div>;
+  </div>
 }

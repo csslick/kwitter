@@ -47,6 +47,16 @@ export default function Home({userObj}) {
     console.log('sweets = ', sweets)
   }
 
+  const onChangeFile = e => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file); // 파일 읽기
+    // 파일로딩완료 이벤트
+    reader.onloadend = (finished) => {
+      console.log(finished);
+    }
+  }
+
   return <div>
     <h1>Home</h1>
     <form onSubmit={onSubmit}>
@@ -56,6 +66,11 @@ export default function Home({userObj}) {
         maxLength={120}
         value={sweet}
         onChange={onChange}
+      />
+      <input 
+        type="file" 
+        accept="image/*" 
+        onChange={onChangeFile}
       />
       <input 
         type="submit" 
