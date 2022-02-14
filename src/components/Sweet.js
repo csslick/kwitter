@@ -51,6 +51,12 @@ export default function Sweet({ sweet, isOwner }) {
         </> :
       <div>
           <h4>{sweet.text}</h4>
+          { sweet.fileURL && 
+            <img src={sweet.fileURL} 
+              alt='img' 
+              width="50" 
+              height="50" 
+            /> }
           {
             isOwner && <>
               <button onClick={onDelete}>글 삭제</button>

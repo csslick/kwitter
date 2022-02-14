@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { db, storage, ref, uploadString } from '../firebase'
 import { collection, addDoc, getDocs, onSnapshot, orderBy, query } from "firebase/firestore";
 import Sweet from '../components/Sweet'; // 글
+import { getDownloadURL } from 'firebase/storage';
 
 // userObj: 사용자 객체, sweets: Doc 
 export default function Home({userObj}) {
@@ -30,23 +31,23 @@ export default function Home({userObj}) {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    try {
-      // const docRef = await addDoc(collection(db, "sweets"), {
-      //   text: sweet,
-      //   createdAt: Date.now(),
-      //   userId: userObj.uid
-      // });
-      // setSweet('');
-      // console.log("Document written with ID: ", docRef.id);
+    // 사진을 추가 했을때만 파일경로 추가
+    let fileURL = '';
+    if(fileURL != '') {
       // 업로드파일 경로지정: uid/이미지파일명
       const fileRef = ref(storage, `${userObj.uid}/${imgName}`);
-      const res = uploadString(fileRef, img, 'data_url')
-        .then((snapshot) => {
-          console.log(snapshot);
-        });
-    } catch (e) {
-      console.error("Error adding document: ", e);
+      const res = await uploadString(fileRef, img, 'data_url');
+      fileURL = await getDownloadURL(fileRef);
     }
+    const docRef = await addDoc(collection(db, "sweets"), {
+      text: sweet,
+      createdAt: Date.now(),
+      userId: userObj.uid,
+      fileURL
+    });
+    setSweet('');
+    setImg('');
+    console.log("Document written with ID: ", docRef.id);
   }
 
   // 글 입력
