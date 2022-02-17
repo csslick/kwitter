@@ -32,8 +32,8 @@ export default function Home({userObj}) {
   const onSubmit = async (e) => {
     e.preventDefault();
     // 사진을 추가 했을때만 파일경로 추가
-    let fileURL = '';
-    if(fileURL != '') {
+    let fileURL = ''; // storage 파일경로
+    if(img != '') {
       // 업로드파일 경로지정: uid/이미지파일명
       const fileRef = ref(storage, `${userObj.uid}/${imgName}`);
       const res = await uploadString(fileRef, img, 'data_url');

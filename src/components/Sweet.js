@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { db } from '../firebase'
 import { doc, deleteDoc, updateDoc } from "firebase/firestore";
+import { getStorage, ref, deleteObject } from "firebase/storage";
 
 export default function Sweet({ sweet, isOwner }) {
   // console.log('Sweet = ', sweet)
+  const storage = getStorage(); // 파이어베이스 스토리지 변수(firebase.js 공통)
   const [edit, setEdit] = useState(false);
   const [newSweet, setNewSweet] = useState(sweet.text);
 
@@ -11,6 +13,7 @@ export default function Sweet({ sweet, isOwner }) {
     const ok = window.confirm('글을 지울까요?');
     if(ok) {
       await deleteDoc(doc(db, "sweets", sweet.id));
+      await deleteObject(ref(storage, sweet.fileURL));
       console.log('delete')
     } 
   }
