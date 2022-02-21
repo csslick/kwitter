@@ -9,7 +9,7 @@ import { getDownloadURL } from 'firebase/storage';
 export default function Home({userObj}) {
   const [sweet, setSweet] = useState('');
   const [sweets, setSweets] = useState([]); // 읽어온 글
-  const [img, setImg] = useState(null);
+  const [img, setImg] = useState('');
   const [imgName, setImgName] = useState(''); // 이미지명
 
   useEffect(() => {
