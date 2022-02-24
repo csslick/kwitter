@@ -7,6 +7,10 @@ function App() {
   const [init, setInit] = useState(false); // 접속상태
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userObj, setUserObj] = useState(null);
+  const [changeDisplayName, setChangeDisplayName] = useState(false);
+  const refreshDisplayName = () => {
+    setChangeDisplayName(prev => !prev)
+  }
 
   useEffect(() => {
     // 접속?
@@ -22,7 +26,12 @@ function App() {
   return (
     <>
       {
-        init ? <AppRouter isLoggedIn={Boolean(userObj)} userObj={userObj} /> : '접속중...'
+        init ? 
+          <AppRouter 
+            isLoggedIn={Boolean(userObj)} 
+            userObj={userObj} 
+            refreshDisplayName={refreshDisplayName} 
+          /> : '접속중...'
       }  
       <footer>&copy; Kwitter {new Date().getFullYear()}</footer>
     </>

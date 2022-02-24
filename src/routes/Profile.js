@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 // import { auth } from '../firebase';
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth, signOut, updateProfile } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import { collection, query, where, getDocs, orderBy } from "firebase/firestore";
 import { db } from '../firebase';
 
-export default function Profile({userObj}) {
+export default function Profile({userObj, refreshDisplayName }) {
   const auth = getAuth();
   const navigate = useNavigate();
+  const [newDisplayName, setNewDisplayName] = useState(userObj.displayName || 'noname');
 
   const logOut = () => {
     signOut(auth).then(() => {
@@ -39,8 +40,35 @@ export default function Profile({userObj}) {
     getMySweets();
   }, [])
 
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const auth = getAuth();
+    updateProfile(auth.currentUser, {
+      displayName: newDisplayName, 
+    }).then(() => {
+      console.log('업데이트 완료!');
+      refreshDisplayName();
+
+    }).catch((err) => {
+      console.log('업데이트 오류')
+    });
+  }
+
+  const onChange = (e) => {
+    setNewDisplayName(e.target.value);
+  }
+
   return <div>
     <h1>Profile</h1>
+    <form onSubmit={onSubmit}>
+      <input 
+        type="text" 
+        placeholder='Display name' 
+        value={newDisplayName}
+        onChange={onChange}
+      />
+      <input type="submit" value='프로파일 업데이트' />
+    </form>
     <button onClick={ logOut }>로그아웃</button>
   </div>;
 }

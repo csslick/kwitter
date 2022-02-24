@@ -6,9 +6,9 @@ import Home from '../routes/Home';
 import Nav from '../components/Nav';
 import Profile from '../routes/Profile';
 
-export default function AppRouter({isLoggedIn, userObj}) {
+export default function AppRouter({isLoggedIn, userObj, refreshDisplayName}) {
   return <Router>
-    {isLoggedIn && <Nav />}
+    {isLoggedIn && <Nav userObj={userObj} />}
     <Routes>
       {isLoggedIn ? 
         <>
@@ -18,7 +18,7 @@ export default function AppRouter({isLoggedIn, userObj}) {
           />
           <Route 
             path="/profile" 
-            element={<Profile userObj={userObj} />}
+            element={<Profile refreshDisplayName={refreshDisplayName} userObj={userObj} />}
           />
         </> :
         <Route path="/" element={<Auth />}/>
